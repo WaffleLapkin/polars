@@ -191,6 +191,7 @@ pub enum FunctionExpr {
     #[cfg(feature = "top_k")]
     TopKBy {
         descending: Vec<bool>,
+        maintain_order: bool,
     },
     #[cfg(feature = "cum_agg")]
     CumCount {
@@ -660,7 +661,13 @@ impl Hash for FunctionExpr {
             Reinterpret(signed) => signed.hash(state),
             ExtendConstant => {},
             #[cfg(feature = "top_k")]
-            TopKBy { descending } => descending.hash(state),
+            TopKBy {
+                descending,
+                maintain_order,
+            } => {
+                descending.hash(state);
+                maintain_order.hash(state);
+            },
 
             RowEncode(variants) => variants.hash(state),
             #[cfg(feature = "dtype-struct")]

@@ -1825,7 +1825,10 @@ fn lower_exprs_with_ctx(
                     },
                     IRFunctionExpr::TopKBy {
                         descending: reverse,
+                        maintain_order,
                     } => {
+                        assert!(!maintain_order, "unimplemented"); // FIXME
+
                         let by_column = by_names
                             .into_iter()
                             .map(|name| {

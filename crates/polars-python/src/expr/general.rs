@@ -306,9 +306,12 @@ impl PyExpr {
     }
 
     #[cfg(feature = "top_k")]
-    fn top_k_by(&self, by: Vec<Self>, k: Self, reverse: Vec<bool>) -> Self {
+    fn top_k_by(&self, by: Vec<Self>, k: Self, reverse: Vec<bool>, maintain_order: bool) -> Self {
         let by = by.into_iter().map(|e| e.inner).collect::<Vec<_>>();
-        self.inner.clone().top_k_by(k.inner, by, reverse).into()
+        self.inner
+            .clone()
+            .top_k_by(k.inner, by, reverse, maintain_order)
+            .into()
     }
 
     #[cfg(feature = "top_k")]
@@ -317,9 +320,18 @@ impl PyExpr {
     }
 
     #[cfg(feature = "top_k")]
-    fn bottom_k_by(&self, by: Vec<Self>, k: Self, reverse: Vec<bool>) -> Self {
+    fn bottom_k_by(
+        &self,
+        by: Vec<Self>,
+        k: Self,
+        reverse: Vec<bool>,
+        maintain_order: bool,
+    ) -> Self {
         let by = by.into_iter().map(|e| e.inner).collect::<Vec<_>>();
-        self.inner.clone().bottom_k_by(k.inner, by, reverse).into()
+        self.inner
+            .clone()
+            .bottom_k_by(k.inner, by, reverse, maintain_order)
+            .into()
     }
 
     #[cfg(feature = "peaks")]

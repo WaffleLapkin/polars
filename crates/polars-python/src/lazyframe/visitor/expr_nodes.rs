@@ -1419,7 +1419,10 @@ pub(crate) fn into_py(py: Python<'_>, expr: &AExpr) -> PyResult<Py<PyAny>> {
                     return Err(PyNotImplementedError::new_err("business"));
                 },
                 #[cfg(feature = "top_k")]
-                IRFunctionExpr::TopKBy { descending } => ("top_k_by", descending).into_py_any(py),
+                IRFunctionExpr::TopKBy {
+                    descending,
+                    maintain_order: _,
+                } => ("top_k_by", descending).into_py_any(py),
                 IRFunctionExpr::EwmMeanBy { half_life: _ } => {
                     return Err(PyNotImplementedError::new_err("ewm_mean_by"));
                 },

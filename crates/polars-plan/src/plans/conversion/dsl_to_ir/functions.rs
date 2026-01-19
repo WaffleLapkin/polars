@@ -825,7 +825,13 @@ pub(super) fn convert_functions(
         #[cfg(feature = "top_k")]
         F::TopK { descending } => I::TopK { descending },
         #[cfg(feature = "top_k")]
-        F::TopKBy { descending } => I::TopKBy { descending },
+        F::TopKBy {
+            descending,
+            maintain_order,
+        } => I::TopKBy {
+            descending,
+            maintain_order,
+        },
         #[cfg(feature = "cum_agg")]
         F::CumCount { reverse } => I::CumCount { reverse },
         #[cfg(feature = "cum_agg")]

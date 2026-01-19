@@ -428,9 +428,13 @@ impl Expr {
         k: K,
         by: E,
         descending: Vec<bool>,
+        maintain_order: bool,
     ) -> Self {
         self.map_n_ary(
-            FunctionExpr::TopKBy { descending },
+            FunctionExpr::TopKBy {
+                descending,
+                maintain_order,
+            },
             [k.into()]
                 .into_iter()
                 .chain(by.as_ref().iter().map(|e| -> Expr { e.clone().into() })),
@@ -454,10 +458,14 @@ impl Expr {
         k: K,
         by: E,
         descending: Vec<bool>,
+        maintain_order: bool,
     ) -> Self {
         let descending = descending.into_iter().map(|x| !x).collect();
         self.map_n_ary(
-            FunctionExpr::TopKBy { descending },
+            FunctionExpr::TopKBy {
+                descending,
+                maintain_order,
+            },
             [k.into()]
                 .into_iter()
                 .chain(by.as_ref().iter().map(|e| -> Expr { e.clone().into() })),

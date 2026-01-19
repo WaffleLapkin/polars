@@ -2159,6 +2159,7 @@ class Expr:
         k: int | IntoExprColumn = 5,
         *,
         reverse: bool | Sequence[bool] = False,
+        maintain_order: bool = False,
     ) -> Expr:
         r"""
         Return the elements corresponding to the `k` largest elements of the `by` column(s).
@@ -2278,7 +2279,7 @@ class Expr:
 
         reverse = extend_bool(reverse, len(by_pyexprs), "reverse", "by")
 
-        return wrap_expr(self._pyexpr.top_k_by(by_pyexprs, k=k_pyexpr, reverse=reverse))
+        return wrap_expr(self._pyexpr.top_k_by(by_pyexprs, k=k_pyexpr, reverse=reverse, maintain_order=maintain_order))
 
     def bottom_k(self, k: int | IntoExprColumn = 5) -> Expr:
         r"""

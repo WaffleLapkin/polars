@@ -216,12 +216,12 @@ pub fn top_k(s: &[Column], descending: bool) -> PolarsResult<Column> {
         },
         _ => {
             // Fallback to more generic impl.
-            top_k_by_impl(k, src, std::slice::from_ref(src), vec![descending])
+            top_k_by_impl(k, src, std::slice::from_ref(src), vec![descending], false)
         },
     }
 }
 
-pub fn top_k_by(s: &[Column], descending: Vec<bool>) -> PolarsResult<Column> {
+pub fn top_k_by(s: &[Column], descending: Vec<bool>, maintain_order: bool) -> PolarsResult<Column> {
     /// Return (k, src, by)
     fn extract_parameters(s: &[Column]) -> PolarsResult<(usize, &Column, &[Column])> {
         let k_s = &s[1];
@@ -258,7 +258,7 @@ pub fn top_k_by(s: &[Column], descending: Vec<bool>) -> PolarsResult<Column> {
         }
     }
 
-    top_k_by_impl(k, src, by, descending)
+    top_k_by_impl(k, src, by, descending, maintain_order)
 }
 
 fn top_k_by_impl(
@@ -266,6 +266,7 @@ fn top_k_by_impl(
     src: &Column,
     by: &[Column],
     descending: Vec<bool>,
+    maintain_order: bool,
 ) -> PolarsResult<Column> {
     if src.is_empty() {
         return Ok(src.clone());
@@ -276,7 +277,7 @@ fn top_k_by_impl(
         descending: descending.into_iter().map(|x| !x).collect(),
         nulls_last: vec![true; by.len()],
         multithreaded,
-        maintain_order: false,
+        maintain_order,
         limit: None,
     };
 

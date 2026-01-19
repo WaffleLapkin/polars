@@ -957,7 +957,13 @@ pub fn ir_function_to_dsl(input: Vec<Expr>, function: IRFunctionExpr) -> Expr {
         #[cfg(feature = "top_k")]
         IF::TopK { descending } => F::TopK { descending },
         #[cfg(feature = "top_k")]
-        IF::TopKBy { descending } => F::TopKBy { descending },
+        IF::TopKBy {
+            descending,
+            maintain_order,
+        } => F::TopKBy {
+            descending,
+            maintain_order,
+        },
         #[cfg(feature = "cum_agg")]
         IF::CumCount { reverse } => F::CumCount { reverse },
         #[cfg(feature = "cum_agg")]

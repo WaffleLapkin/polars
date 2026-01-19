@@ -205,6 +205,7 @@ pub enum IRFunctionExpr {
     #[cfg(feature = "top_k")]
     TopKBy {
         descending: Vec<bool>,
+        maintain_order: bool,
     },
     #[cfg(feature = "cum_agg")]
     CumCount {
@@ -679,7 +680,13 @@ impl Hash for IRFunctionExpr {
             Reinterpret(signed) => signed.hash(state),
             ExtendConstant => {},
             #[cfg(feature = "top_k")]
-            TopKBy { descending } => descending.hash(state),
+            TopKBy {
+                descending,
+                maintain_order,
+            } => {
+                descending.hash(state);
+                maintain_order.hash(state);
+            },
 
             RowEncode(dts, variants) => {
                 dts.hash(state);
