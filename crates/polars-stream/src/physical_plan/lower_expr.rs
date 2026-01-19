@@ -1820,7 +1820,11 @@ fn lower_exprs_with_ctx(
                 let out_col_node = ctx.expr_arena.add(AExpr::Column(out_name.clone()));
                 let out_col_expr = ExprIR::new(out_col_node, OutputName::Alias(out_name));
                 let (by_column, reverse) = match function {
-                    IRFunctionExpr::TopK { descending } => {
+                    IRFunctionExpr::TopK {
+                        descending,
+                        maintain_order,
+                    } => {
+                        assert!(!maintain_order, "unimplemented"); // FIXME
                         (vec![out_col_expr.clone()], vec![descending])
                     },
                     IRFunctionExpr::TopKBy {

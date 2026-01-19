@@ -1266,7 +1266,10 @@ pub(crate) fn into_py(py: Python<'_>, expr: &AExpr) -> PyResult<Py<PyAny>> {
                 },
                 IRFunctionExpr::AsStruct => ("as_struct",).into_py_any(py),
                 #[cfg(feature = "top_k")]
-                IRFunctionExpr::TopK { descending } => ("top_k", descending).into_py_any(py),
+                IRFunctionExpr::TopK {
+                    descending,
+                    maintain_order: _,
+                } => ("top_k", descending).into_py_any(py),
                 IRFunctionExpr::CumCount { reverse } => ("cum_count", reverse).into_py_any(py),
                 IRFunctionExpr::CumSum { reverse } => ("cum_sum", reverse).into_py_any(py),
                 IRFunctionExpr::CumProd { reverse } => ("cum_prod", reverse).into_py_any(py),

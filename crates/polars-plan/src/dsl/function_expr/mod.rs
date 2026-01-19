@@ -187,6 +187,7 @@ pub enum FunctionExpr {
     #[cfg(feature = "top_k")]
     TopK {
         descending: bool,
+        maintain_order: bool,
     },
     #[cfg(feature = "top_k")]
     TopKBy {
@@ -535,7 +536,13 @@ impl Hash for FunctionExpr {
                 has_max.hash(state);
             },
             #[cfg(feature = "top_k")]
-            TopK { descending } => descending.hash(state),
+            TopK {
+                descending,
+                maintain_order,
+            } => {
+                descending.hash(state);
+                maintain_order.hash(state);
+            },
             #[cfg(feature = "cum_agg")]
             CumCount { reverse } => reverse.hash(state),
             #[cfg(feature = "cum_agg")]
@@ -768,7 +775,10 @@ impl Display for FunctionExpr {
             #[cfg(feature = "dtype-struct")]
             AsStruct => "as_struct",
             #[cfg(feature = "top_k")]
-            TopK { descending } => {
+            TopK {
+                descending,
+                maintain_order: _,
+            } => {
                 if *descending {
                     "bottom_k"
                 } else {

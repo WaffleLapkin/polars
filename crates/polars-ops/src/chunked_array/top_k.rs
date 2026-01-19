@@ -147,7 +147,7 @@ fn top_k_binary_impl(
     ChunkedArray::with_chunk_like(ca, arr)
 }
 
-pub fn top_k(s: &[Column], descending: bool) -> PolarsResult<Column> {
+pub fn top_k(s: &[Column], descending: bool, maintain_order: bool) -> PolarsResult<Column> {
     fn extract_target_and_k(s: &[Column]) -> PolarsResult<(usize, &Column)> {
         let k_s = &s[1];
         polars_ensure!(
@@ -197,7 +197,7 @@ pub fn top_k(s: &[Column], descending: bool) -> PolarsResult<Column> {
 
     let s = src.to_physical_repr();
 
-    match s.dtype() {
+    match dbg!(s.dtype()) {
         DataType::Boolean => Ok(top_k_bool_impl(s.bool().unwrap(), k, descending).into_column()),
         DataType::String => {
             let ca = top_k_binary_impl(&s.str().unwrap().as_binary(), k, descending);

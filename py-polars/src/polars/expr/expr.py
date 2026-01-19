@@ -2104,7 +2104,7 @@ class Expr:
         """
         return wrap_expr(self._pyexpr.sort_with(descending, nulls_last))
 
-    def top_k(self, k: int | IntoExprColumn = 5) -> Expr:
+    def top_k(self, k: int | IntoExprColumn = 5, maintain_order: bool = False) -> Expr:
         r"""
         Return the `k` largest elements.
 
@@ -2150,7 +2150,7 @@ class Expr:
         └───────┴──────────┘
         """
         k_pyexpr = parse_into_expression(k)
-        return wrap_expr(self._pyexpr.top_k(k_pyexpr))
+        return wrap_expr(self._pyexpr.top_k(k_pyexpr, maintain_order))
 
     @deprecate_renamed_parameter("descending", "reverse", version="1.0.0")
     def top_k_by(

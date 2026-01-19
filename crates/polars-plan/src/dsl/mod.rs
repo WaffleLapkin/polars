@@ -415,8 +415,14 @@ impl Expr {
     ///
     /// This has time complexity `O(n + k log(n))`.
     #[cfg(feature = "top_k")]
-    pub fn top_k(self, k: Expr) -> Self {
-        self.map_binary(FunctionExpr::TopK { descending: false }, k)
+    pub fn top_k(self, k: Expr, maintain_order: bool) -> Self {
+        self.map_binary(
+            FunctionExpr::TopK {
+                descending: false,
+                maintain_order,
+            },
+            k,
+        )
     }
 
     /// Returns the `k` largest rows by given column.
@@ -445,8 +451,14 @@ impl Expr {
     ///
     /// This has time complexity `O(n + k log(n))`.
     #[cfg(feature = "top_k")]
-    pub fn bottom_k(self, k: Expr) -> Self {
-        self.map_binary(FunctionExpr::TopK { descending: true }, k)
+    pub fn bottom_k(self, k: Expr, maintain_order: bool) -> Self {
+        self.map_binary(
+            FunctionExpr::TopK {
+                descending: true,
+                maintain_order,
+            },
+            k,
+        )
     }
 
     /// Returns the `k` smallest rows by given column.
