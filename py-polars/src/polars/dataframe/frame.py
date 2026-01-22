@@ -6202,6 +6202,7 @@ class DataFrame:
         *,
         by: IntoExpr | Iterable[IntoExpr],
         reverse: bool | Sequence[bool] = False,
+        maintain_order: bool = False,
     ) -> DataFrame:
         """
         Return the `k` largest rows.
@@ -6273,7 +6274,7 @@ class DataFrame:
 
         return (
             self.lazy()
-            .top_k(k, by=by, reverse=reverse)
+            .top_k(k, by=by, reverse=reverse, maintain_order=maintain_order)
             .collect(
                 optimizations=QueryOptFlags(
                     projection_pushdown=False,

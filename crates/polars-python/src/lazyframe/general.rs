@@ -510,13 +510,15 @@ impl PyLazyFrame {
         .into()
     }
 
-    fn top_k(&self, k: IdxSize, by: Vec<PyExpr>, reverse: Vec<bool>) -> Self {
+    fn top_k(&self, k: IdxSize, by: Vec<PyExpr>, reverse: Vec<bool>, maintain_order: bool) -> Self {
         let ldf = self.ldf.read().clone();
         let exprs = by.to_exprs();
         ldf.top_k(
             k,
             exprs,
-            SortMultipleOptions::new().with_order_descending_multi(reverse),
+            SortMultipleOptions::new()
+                .with_order_descending_multi(reverse)
+                .with_maintain_order(maintain_order),
         )
         .into()
     }

@@ -1803,6 +1803,7 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         *,
         by: IntoExpr | Iterable[IntoExpr],
         reverse: bool | Sequence[bool] = False,
+        maintain_order: bool = False,
     ) -> LazyFrame:
         """
         Return the `k` largest rows.
@@ -1872,7 +1873,7 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         """
         by = parse_into_list_of_expressions(by)
         reverse = extend_bool(reverse, len(by), "reverse", "by")
-        return self._from_pyldf(self._ldf.top_k(k, by=by, reverse=reverse))
+        return self._from_pyldf(self._ldf.top_k(k, by=by, reverse=reverse, maintain_order=maintain_order))
 
     @deprecate_renamed_parameter("descending", "reverse", version="1.0.0")
     def bottom_k(
